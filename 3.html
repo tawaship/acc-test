@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Device Orientation</title>
+<script src="gyronorm.complete.min.js"></script>
     <style type="text/css">
 .container {
   width: 2px;
@@ -102,7 +103,7 @@
     }
 
     function logger(data) {
-      $('#error-message').append(data.message + "\n");
+   //   $('#error-message').append(data.message + "\n");
     }
 
     function stop_gn() {
@@ -123,20 +124,8 @@
     function set_head_gn() {
       gn.setHeadDirection();
     }
-
-    function showDO() {
-      $('#do').show();
-      $('#dm').hide();
-      $('#btn-dm').removeClass('selected');
-      $('#btn-do').addClass('selected');
-    }
-
-    function showDM() {
-      $('#dm').show();
-      $('#do').hide();
-      $('#btn-do').removeClass('selected');
-      $('#btn-dm').addClass('selected');
-    }
+    
+    init_gn()
   </script>
 </body>
 </html>
