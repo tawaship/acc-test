@@ -9,16 +9,19 @@
 <div id="x">0</div>
 <div id="y">0</div>
 <div id="z">0</div>
+<div id="r">0</div>
 <button id="b">ON</button>
 
 <script>
 const x = document.getElementById("x");
 const y = document.getElementById("y");
 const z = document.getElementById("z");
+const r = document.getElementById("r");
 const b = document.getElementById("b");
 b.addEventListener("click", () => {
 	b.disabled = true;
 	window.addEventListener("deviceorientation", e => {
+		r.innerHTML = window.orientation;
 		x.innerHTML = e.beta;
 		y.innerHTML = e.gamma;
 		z.innerHTML = e.alpha;
