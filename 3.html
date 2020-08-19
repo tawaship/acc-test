@@ -62,17 +62,81 @@
             <div class="face bottom">4</div>
         </div>
     </div>
-
+    
+    <button onclick="set_head_gn">reset</button>
+    
     <script type="text/javascript">
-        var logEl = document.querySelector("#log");
-        var cubeEl = document.querySelector("#cube");
+    var gn;
 
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener("deviceorientation", function (e) {
-                logEl.innerHTML = `alpha: ${e.alpha}<br />beta: ${e.beta}<br />gamma: ${e.gamma}`;
-                cubeEl.style.transform = `rotateZ(${-e.alpha}deg) rotateX(${-e.beta}deg) rotateY(${e.gamma}deg)`;
-            });
+    function init_gn() {
+      var args = {
+        logger: logger
+      };
+
+      gn = new GyroNorm();
+
+      gn.init(args).then(function() {
+        var isAvailable = gn.isAvailable();
+        if(!isAvailable.deviceOrientationAvailable) {
+          logger({message:'Device orientation is not available.'});
         }
-    </script>
+
+        if(!isAvailable.accelerationAvailable) {
+          logger({message:'Device acceleration is not available.'});
+        }
+
+        if(!isAvailable.accelerationIncludingGravityAvailable) {
+          logger({message:'Device acceleration incl. gravity is not available.'});
+        } 
+
+        if(!isAvailable.rotationRateAvailable) {
+          logger({message:'Device rotation rate is not available.'});
+        }
+
+        start_gn();
+      }).catch(function(e){
+
+        console.log(e);
+        
+      });
+    }
+
+    function logger(data) {
+      $('#error-message').append(data.message + "\n");
+    }
+
+    function stop_gn() {
+      gn.stop();
+    }
+
+    function start_gn() {
+      gn.start(gnCallBack);
+    }
+
+    function gnCallBack(data) {
+    var logEl = document.querySelector("#log");
+        var cubeEl = document.querySelector("#cube");
+    	cubeEl.style.transform = `rotateZ(${-data.do.alpha}deg) rotateX(${-data.do.beta}deg) rotateY(${data.do.gamma}deg)`;
+    	
+    }
+
+    function set_head_gn() {
+      gn.setHeadDirection();
+    }
+
+    function showDO() {
+      $('#do').show();
+      $('#dm').hide();
+      $('#btn-dm').removeClass('selected');
+      $('#btn-do').addClass('selected');
+    }
+
+    function showDM() {
+      $('#dm').show();
+      $('#do').hide();
+      $('#btn-do').removeClass('selected');
+      $('#btn-dm').addClass('selected');
+    }
+  </script>
 </body>
 </html>
