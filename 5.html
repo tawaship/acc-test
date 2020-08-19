@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Device Orientation</title>
+<script src="gyronorm.complete.min.js"></script>
+    <style type="text/css">
+.container {
+  width: 2px;
+  height: 2px;
+  margin: 100px auto;
+  perspective: 300px;
+}
+
+#cube {
+  transform-style: preserve-3d;
+}
+
+.face {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: -50px;
+  top: -50px;
+  background: rgba(255, 102, 0, 0.5);
+  border: 2px solid gray;
+  text-align: center;
+  font-size: 60px;
+  line-height: 100px;
+}
+
+.front {
+  transform: translateZ(50px);
+}
+.back {
+  transform: rotateY(180deg) translateZ(50px);
+}
+.right {
+  transform: rotateY(90deg) translateZ(50px);
+}
+.left {
+  transform: rotateY(-90deg) translateZ(50px);
+}
+.top {
+  transform: rotateX(90deg) translateZ(50px);
+}
+.bottom {
+  transform: rotateX(-90deg) translateZ(50px);
+}
+    </style>
+</head>
+<body>
+    <div id="log"></div>
+
+    <div class="container">
+        <div id="cube">
+            <div class="face front">1</div>
+            <div class="face back">6</div>
+            <div class="face right">2</div>
+            <div class="face left">5</div>
+            <div class="face top">3</div>
+            <div class="face bottom">4</div>
+        </div>
+    </div>
+    
+    <button onclick="set_head_gn">reset</button>
+    
+    <script type="text/javascript">
+    var gn;
+
+    function init_gn() {
+      var args = {
+        logger: logger
+      };
+
+      gn = new GyroNorm();
+
+      gn.init(args).then(function() {
+        var isAvailable = gn.isAvailable();
+        if(!isAvailable.deviceOrientationAvailable) {
+          logger({message:'Device orientation is not available.'});
+        }
+
+        if(!isAvailable.accelerationAvailable) {
+          logger({message:'Device acceleration is not available.'});
+        }
+
+        if(!isAvailable.accelerationIncludingGravityAvailable) {
+          logger({message:'Device acceleration incl. gravity is not available.'});
+        } 
+
+        if(!isAvailable.rotationRateAvailable) {
+          logger({message:'Device rotation rate is not available.'});
+        }
+
+        start_gn();
+      }).catch(function(e){
+
+        console.log(e);
+        
+      });
+    }
+
+    function logger(data) {
+   //   $('#error-message').append(data.message + "\n");
+    }
+
+    function stop_gn() {
+      gn.stop();
+    }
+
+    function start_gn() {
+      gn.start(gnCallBack);
+    }
+
+    function gnCallBack(data) {
+    var logEl = document.querySelector("#log");
+        var cubeEl = document.querySelector("#cube");
+    	cubeEl.style.transform = `rotateZ(${-data.do.alpha}deg) rotateX(${-data.do.beta}deg) rotateY(${data.do.gamma}deg)`;
+    	
+    }
+
+    function set_head_gn() {
+      gn.setHeadDirection();
+    }
+    
+    init_gn()
+  </script>
+</body>
+</html>
