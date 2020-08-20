@@ -65,7 +65,10 @@
     </div>
     
     <button onclick="set_head_gn()">reset</button>
-    
+    <div id="al">0</div>
+    <div id="be">0</div>
+    <div id="ga">0</div>
+    var 8
     <script type="text/javascript">
     var gn;
 
@@ -113,15 +116,45 @@
     function start_gn() {
       gn.start(gnCallBack);
     }
-
+	
+	var DEG_TO_RAD = Math.PI / 180;
+	var RAD_TO_DEG = 1 / DEG_TO_RAD;
+	
     function gnCallBack(data) {
+   
     var logEl = document.querySelector("#log");
         var cubeEl = document.querySelector("#cube");
-    	cubeEl.style.transform = `rotateZ(${-data.do.alpha}deg) rotateX(${-data.do.beta}deg) rotateY(${data.do.gamma}deg)`;
+        var al = document.getElementById("al")
+         var be = document.getElementById("be")
+          var ga = document.getElementById("ga")
+        var _alpha = -data.do.alpha;
+        _beta = data.do.beta;
+        _gamma = data.do.gamma;
+       // _alpha = -90
+       // _alpha = (Math.cos(_alpha) * Math.sin(_beta * DEG_TO_RAD)) * RAD_TO_DEG;
+        al.innerHTML = _alpha
+        be.innerHTML = _beta
+        ga.innerHTML = _gamma
+        def_beta = 60
+        var a = _alpha * DEG_TO_RAD;
+        var b = def_beta * DEG_TO_RAD;
+        var g = def_gamma * DEG_TO_RAD;
+       
+    	//cubeEl.style.transform = `rotateZ(${-data.do.alpha}deg) rotateX(${-(data.do.beta - def_beta)}deg) rotateY(${(data.do.gamma - def_gamma)}deg)`;
+    	cubeEl.style.transform = `rotateZ(${(_alpha /*+ Math.sin(b)*/)}deg)`;
     	
     }
-
+	var _beta = 0;
+	var _gamma = 0;
+	
+	var def_beta = 0;
+	var def_gamma = 0;
+	
     function set_head_gn() {
+   //alert(`5 beta: ${_beta} , gamma: ${_gamma}`)
+    	def_beta = _beta
+    	def_gamma = _gamma;
+    	
       gn.setHeadDirection();
     }
     

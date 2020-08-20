@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no, minimal-ui">
+</head>
+<body>
+<div id="x">0</div>
+<div id="y">0</div>
+<div id="z">0</div>
+<div id="r">0</div>
+<button id="b">ON</button>
+
+<script>
+const x = document.getElementById("x");
+const y = document.getElementById("y");
+const z = document.getElementById("z");
+const b = document.getElementById("b");
+b.addEventListener("click", () => {
+	b.disabled = true;
+	window.addEventListener("deviceorientation", e => {
+		x.innerHTML = e.beta;
+		y.innerHTML = e.gamma;
+		z.innerHTML = e.alpha;
+	});
+});
+</script>
+</body>

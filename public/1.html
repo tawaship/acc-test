@@ -1,0 +1,123 @@
+<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no, minimal-ui">
+</head>
+
+support DeviceOrientationEvent<br>
+<input id="input_04_support" style="margin-bottom:25px;"><br>
+alpha<br>
+<input id="input_04_alpha" style="margin-bottom:5px;"><br>
+beta<br>
+<input id="input_04_beta" style="margin-bottom:5px;"><br>
+gamma<br>
+<input id="input_04_gamma" style="margin-bottom:25px;"><br>
+absolute<br>
+<input id="input_04_absolute" style="margin-bottom:5px;"><br>
+timeStamp<br>
+<input id="input_04_timestamp" style="margin-bottom:25px;"><br>
+orientation<br>
+<input id="input_04_orientation" style="margin-bottom:10px;"><br>
+axisX<br>
+x:<input id="input_04_axis_x_x" style="width:70px;"> y:<input id="input_04_axis_x_y" style="width:70px;"> z:<input id="input_04_axis_x_z" style=" width:70px; margin-bottom:10px;"><br>
+axisY<br>
+x:<input id="input_04_axis_y_x" style="width:70px;"> y:<input id="input_04_axis_y_y" style="width:70px;"> z:<input id="input_04_axis_y_z" style=" width:70px; margin-bottom:10px;"><br>
+axisZ<br>
+x:<input id="input_04_axis_z_x" style="width:70px;"> y:<input id="input_04_axis_z_y" style="width:70px;"> z:<input id="input_04_axis_z_z" style=" width:70px; margin-bottom:10px;"><br>
+
+<script type="text/javascript">
+<!--
+// 匿名関数内で実行
+(function (){
+
+	// ------------------------------------------------------------
+	// 各要素を取得
+	// ------------------------------------------------------------
+	var input_support = document.getElementById("input_04_support");
+	var input_alpha = document.getElementById("input_04_alpha");
+	var input_beta  = document.getElementById("input_04_beta");
+	var input_gamma = document.getElementById("input_04_gamma");
+	var input_absolute = document.getElementById("input_04_absolute");
+	var input_timestamp = document.getElementById("input_04_timestamp");
+	var input_orientation = document.getElementById("input_04_orientation");
+	var input_axis_x_x = document.getElementById("input_04_axis_x_x");
+	var input_axis_x_y = document.getElementById("input_04_axis_x_y");
+	var input_axis_x_z = document.getElementById("input_04_axis_x_z");
+	var input_axis_y_x = document.getElementById("input_04_axis_y_x");
+	var input_axis_y_y = document.getElementById("input_04_axis_y_y");
+	var input_axis_y_z = document.getElementById("input_04_axis_y_z");
+	var input_axis_z_x = document.getElementById("input_04_axis_z_x");
+	var input_axis_z_y = document.getElementById("input_04_axis_z_y");
+	var input_axis_z_z = document.getElementById("input_04_axis_z_z");
+
+	// ------------------------------------------------------------
+	// サポートチェック
+	// ------------------------------------------------------------
+	input_support.value = String(Boolean(window.DeviceOrientationEvent));
+
+	// ------------------------------------------------------------
+	// デバイスの姿勢が変化するたびに実行されるイベント
+	// ------------------------------------------------------------
+	window.addEventListener( "deviceorientation" , function (e){
+
+		// ------------------------------------------------------------
+		// 各情報を取得する
+		// ------------------------------------------------------------
+		input_alpha.value = String( e.alpha );
+		input_beta.value  = String( e.beta  );
+		input_gamma.value = String( e.gamma );
+		input_absolute.value  = e.absolute;
+		input_timestamp.value = e.timeStamp;
+		input_orientation.value = String( window.orientation );
+
+		// ------------------------------------------------------------
+		// デバイスの現在の各軸ベクトルを計算する
+		// ------------------------------------------------------------
+		var ro = -(window.orientation || 0) * Math.PI / 180;
+		var ry =  (e.gamma || 0) * Math.PI / 180;
+		var rx =  (e.beta  || 0) * Math.PI / 180;
+		var rz =  (e.alpha || 0) * Math.PI / 180;
+		var co = Math.cos(ro);
+		var so = Math.sin(ro);
+		var cy = Math.cos(ry);
+		var sy = Math.sin(ry);
+		var cx = Math.cos(rx);
+		var sx = Math.sin(rx);
+		var cz = Math.cos(rz);
+		var sz = Math.sin(rz);
+
+		// ローカル x 軸ベクトル
+		var axisX = {
+			x: co * cy * cz - co * sy * sx * sz - so * cx * sz,
+			y: co * cy * sz + co * sy * sx * cz + so * cx * cz,
+			z:-co * sy * cx + so * sx
+		};
+
+		// ローカル y 軸ベクトル
+		var axisY = {
+			x:-so * cy * cz + so * sy * sx * sz - co * cx * sz,
+			y:-so * cy * sz - so * sy * sx * cz + co * cx * cz,
+			z: so * sy * cx + co * sx
+		};
+
+		// ローカル z 軸ベクトル
+		var axisZ = {
+			x:sy * cz + cy * sx * sz,
+			y:sy * sz - cy * sx * cz,
+			z:cy * cx,
+		};
+
+		// 出力
+		input_axis_x_x.value = (axisX.x).toFixed(4);
+		input_axis_x_y.value = (axisX.y).toFixed(4);
+		input_axis_x_z.value = (axisX.z).toFixed(4);
+		input_axis_y_x.value = (axisY.x).toFixed(4);
+		input_axis_y_y.value = (axisY.y).toFixed(4);
+		input_axis_y_z.value = (axisY.z).toFixed(4);
+		input_axis_z_x.value = (axisZ.x).toFixed(4);
+		input_axis_z_y.value = (axisZ.y).toFixed(4);
+		input_axis_z_z.value = (axisZ.z).toFixed(4);
+	});
+
+})();
+//-->
+</script>
