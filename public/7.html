@@ -1,0 +1,104 @@
+デバイスを水平に寝かせて閲覧している場合
+<div id="element_05_compass_h" style="margin:10px 0px 10px 100px; width:200px; height:200px; position:relative; line-height:1; background:#fcc; border:10px solid #caa; border-radius:100px;">
+<div style="position:absolute; width:180px; height:180px; font-size:180px; font-weight:bold; top:0; bottom:0; left:0; right:0; margin:auto;">↑</div>
+</div>
+angle<br>
+<input id="input_05_angle_h" style="margin-bottom:5px;"><br>
++(axisY)<br>
+x:<input id="input_05_axis_y_x" style="width:70px;"> y:<input id="input_05_axis_y_y" style="width:70px;"> z:<input id="input_05_axis_y_z" style=" width:70px; margin-bottom:5px;"><br>
+<hr>
+デバイスを垂直に立てて閲覧している場合
+<div id="element_05_compass_v" style="margin:-50px 0px -30px 100px; width:200px; height:200px; position:relative; line-height:1; background:#ccf; border:10px solid #aac;">
+<div style="position:absolute; width:180px; height:180px; font-size:180px; font-weight:bold; top:0; bottom:0; left:0; right:0; margin:auto;">↑</div>
+</div>
+angle<br>
+<input id="input_05_angle_v" style="margin-bottom:5px;"><br>
+-(axisZ)<br>
+x:<input id="input_05_axis_z_x" style="width:70px;"> y:<input id="input_05_axis_z_y" style="width:70px;"> z:<input id="input_05_axis_z_z" style=" width:70px; margin-bottom:5px;"><br>
+
+<script type="text/javascript">
+// 匿名関数内で実行
+(function (){
+
+	// ------------------------------------------------------------
+	// 各要素を取得
+	// ------------------------------------------------------------
+	var input_angle_h = document.getElementById("input_05_angle_h");
+	var input_angle_v = document.getElementById("input_05_angle_v");
+	var element_compass_h = document.getElementById("element_05_compass_h");
+	var element_compass_v = document.getElementById("element_05_compass_v");
+	var input_axis_y_x = document.getElementById("input_05_axis_y_x");
+	var input_axis_y_y = document.getElementById("input_05_axis_y_y");
+	var input_axis_y_z = document.getElementById("input_05_axis_y_z");
+	var input_axis_z_x = document.getElementById("input_05_axis_z_x");
+	var input_axis_z_y = document.getElementById("input_05_axis_z_y");
+	var input_axis_z_z = document.getElementById("input_05_axis_z_z");
+
+	// ------------------------------------------------------------
+	// デバイスの姿勢が変化するたびに実行されるイベント
+	// ------------------------------------------------------------
+	window.addEventListener( "deviceorientation" , function (e){
+
+		// ------------------------------------------------------------
+		// デバイスの現在の各軸ベクトルを計算する
+		// ------------------------------------------------------------
+		var ro = -(window.orientation || 0) * Math.PI / 180;
+		var ry =  (e.gamma || 0) * Math.PI / 180;
+		var rx =  (e.beta  || 0) * Math.PI / 180;
+		var rz =  (e.alpha || 0) * Math.PI / 180;
+		var co = Math.cos(ro);
+		var so = Math.sin(ro);
+		var cy = Math.cos(ry);
+		var sy = Math.sin(ry);
+		var cx = Math.cos(rx);
+		var sx = Math.sin(rx);
+		var cz = Math.cos(rz);
+		var sz = Math.sin(rz);
+
+		// ローカル x 軸ベクトル
+		var axisX = {
+			x: co * cy * cz - co * sy * sx * sz - so * cx * sz,
+			y: co * cy * sz + co * sy * sx * cz + so * cx * cz,
+			z:-co * sy * cx + so * sx
+		};
+
+		// ローカル y 軸ベクトル
+		var axisY = {
+			x:-so * cy * cz + so * sy * sx * sz - co * cx * sz,
+			y:-so * cy * sz - so * sy * sx * cz + co * cx * cz,
+			z: so * sy * cx + co * sx
+		};
+
+		// ローカル z 軸ベクトル
+		var axisZ = {
+			x: sy * cz + cy * sx * sz,
+			y: sy * sz - cy * sx * cz,
+			z: cy * cx
+		};
+
+		// ------------------------------------------------------------
+		// デバイスを水平に寝かせて閲覧している場合
+		// ------------------------------------------------------------
+		var angle = Math.atan2(-axisY.x,axisY.y) * (180.0 / Math.PI);
+		if(axisZ.z < 0) angle = -angle;
+
+		element_compass_h.style.transform = "rotate(" + (angle) + "deg)";
+		input_angle_h.value = angle;
+		input_axis_y_x.value = (axisY.x).toFixed(4);
+		input_axis_y_y.value = (axisY.y).toFixed(4);
+		input_axis_y_z.value = (axisY.z).toFixed(4);
+
+		// ------------------------------------------------------------
+		// デバイスを垂直に立てて閲覧している場合
+		// ------------------------------------------------------------
+		var angle = Math.atan2(axisX.x,-axisZ.y) * (180.0 / Math.PI);
+
+		element_compass_v.style.transform = "perspective(300px) rotateX(65deg) rotateZ(" + (angle).toFixed(10) + "deg)";
+		input_angle_v.value = angle;
+		input_axis_z_x.value = (-axisX.x).toFixed(4);
+		input_axis_z_y.value = (-axisX.y).toFixed(4);
+		input_axis_z_z.value = (-axisX.z).toFixed(4);
+	});
+
+})();
+</script>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <meta charset="utf-8" />
+	 <meta name="viewport" content="width=device-width" />
+	     <style type="text/css">
+.container {
+  width: 2px;
+  height: 2px;
+  margin: 100px auto;
+  perspective: 300px;
+}
+
+#cube {
+  transform-style: preserve-3d;
+}
+
+.face {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: -50px;
+  top: -50px;
+  background: rgba(255, 102, 0, 0.5);
+  border: 2px solid gray;
+  text-align: center;
+  font-size: 60px;
+  line-height: 100px;
+}
+
+.line {
+  width: 200px;
+  height: 2px;
+  position: absolute;
+  left: -100px;
+  top: -1px;
+  text-align: center;
+  font-size: 60px;
+  line-height: 10
+}
+
+.x { 
+	background: rgb(255, 0, 0);
+}
+
+.y {
+	background: rgb(0, 255, 0);
+	transform: rotateZ(90deg)
+}
+
+.z {
+	background: rgb(0, 0, 255);
+	transform: rotateY(90deg)
+}
+
+.front {
+  transform: translateZ(50px);
+}
+.back {
+  transform: rotateY(180deg) translateZ(50px);
+}
+.right {
+  transform: rotateY(90deg) translateZ(50px);
+}
+.left {
+  transform: rotateY(-90deg) translateZ(50px);
+}
+.top {
+  transform: rotateX(90deg) translateZ(50px);
+}
+.bottom {
+  transform: rotateX(-90deg) translateZ(50px);
+}
+    </style>
+    </head>
+<body>
+	<div class="container">
+        <div id="cube">
+            <div class="face front">1</div>
+            <div class="face back">6</div>
+            <div class="face right">2</div>
+            <div class="face left">5</div>
+            <div class="face top">3</div>
+            <div class="face bottom">4</div>
+            
+            <div class="line x"></div>
+             <div class="line y"></div>
+              <div class="line z"></div>
+        </div>
+    </div>
+	<script>
+	
+	 function rx(b, r) {
+		var rad = r * Math.PI / 180;
+		
+		for (let i in b) {
+			const _b = b[i];
+			const x = _b.x;
+			const y = _b.y;
+			const z = _b.z;
+			
+			_b.x = x * 1 + y * 0 + z * 0;
+			_b.y = x * 0 + y * Math.cos(rad) + z * Math.sin(rad);
+			_b.z = x * 0 + y * -Math.sin(rad) + z * Math.cos(rad);
+		}
+		
+		console.log(`axis x in y: ${(Math.atan2(b.y.y, b.y.z) * 180 / Math.PI - 90).toFixed(4)}`);
+		console.log(`axis z in y: ${(Math.atan2(b.z.y, b.z.z) * 180 / Math.PI).toFixed(4)}`);
+		
+		return b;
+	}
+	
+	 function ry(b, r) {
+		var rad = r * Math.PI / 180;
+		
+		for (let i in b) {
+			const _b = b[i];
+			const x = _b.x;
+			const y = _b.y;
+			const z = _b.z;
+			
+			_b.x = x * Math.cos(rad) + y * 0 + z * -Math.sin(rad);
+			_b.y = x * 0 + y * 1 + z * 0;
+			_b.z = x * Math.sin(rad) + y * 0 + z * Math.cos(rad);
+		}
+		
+		//console.log(`axis x in y: ${(Math.atan2(b.x.x, b.x.z) * 180 / Math.PI - 90).toFixed(4)}`);
+		//console.log(`axis z in y: ${(Math.atan2(b.z.x, b.z.z) * 180 / Math.PI).toFixed(4)}`);
+		
+		return b;
+	}
+	
+	function rz(b, r) {
+		var rad = r * Math.PI / 180;
+		
+		for (let i in b) {
+			const _b = b[i];
+			const x = _b.x;
+			const y = _b.y;
+			const z = _b.z;
+			
+			_b.x = x * Math.cos(rad) + y * Math.sin(rad) + z * 0;
+			_b.y = x * -Math.sin(rad) + y * Math.cos(rad) + z * 0;
+			_b.z = x * 0 + y * 0 + z * 1;
+		}
+		
+		//console.log(`axis x in z: ${(Math.atan2(b.x.x, b.x.y) * 180 / Math.PI - 90).toFixed(4)}`);
+		//console.log(`axis y in z: ${(Math.atan2(b.y.x, b.y.y) * 180 / Math.PI).toFixed(4)}`);
+		
+		return b;
+	}
+	
+	function r(b, t) {
+		console.log(`axis ${t}: ${(Math.atan2(b[x].x, b[x].y) * 180 / Math.PI).toFixed(4)}`)
+	}
+	
+	var b = {
+		x: {x: 1, y: 0, z: 0},
+		y: {x: 0, y: 1, z: 0},
+		z: {x: 0, y: 0, z: 1}
+	}
+	
+	rz(b, 0);
+	rx(b, -29);
+	ry(b, 41);
+	var rt = 0;
+	//setInterval(()=>{
+	//rz(b, 1)
+	
+	const cubeEl = document.querySelector("#cube");
+	
+	const alpha = Math.atan2(b.y.x, b.y.y) * 180 / Math.PI;
+	const beta = Math.atan2(b.z.y, b.z.z) * 180 / Math.PI;
+	const gamma = Math.atan2(b.x.z, b.x.x) * 180 / Math.PI;
+	
+	console.log(`x: ${beta}`)
+	console.log(`y: ${gamma}`)
+	console.log(`z: ${alpha}`)
+	cubeEl.style.transform = `rotateZ(${-alpha}deg) rotateX(${-beta}deg) rotateY(${gamma}deg)`;
+	console.log('x:', b.x)
+	console.log('y:', b.y)
+	console.log('z:', b.z)
+	//}, 100)
+  </script>
+</body>
+</html>

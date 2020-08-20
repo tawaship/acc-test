@@ -67,12 +67,17 @@
         var logEl = document.querySelector("#log");
         var cubeEl = document.querySelector("#cube");
 
-        if (window.DeviceOrientationEvent) {
+       // if (window.DeviceOrientationEvent) {
+        	var e ={}
+        	e.alpha = 0;
+        	e.beta = 0;
+        	e.gamma = 0;
+        	cubeEl.style.transform = `rotateZ(${-e.alpha}deg) rotateX(${-e.beta}deg) rotateY(${e.gamma}deg)`;
             window.addEventListener("deviceorientation", function (e) {
                 logEl.innerHTML = `alpha: ${e.alpha}<br />beta: ${e.beta}<br />gamma: ${e.gamma}`;
                 cubeEl.style.transform = `rotateZ(${-e.alpha}deg) rotateX(${-e.beta}deg) rotateY(${e.gamma}deg)`;
             });
-        }
+      //  }
     </script>
 </body>
 </html>

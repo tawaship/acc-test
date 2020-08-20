@@ -141,8 +141,8 @@
         var g = def_gamma * DEG_TO_RAD;
        
     	//cubeEl.style.transform = `rotateZ(${-data.do.alpha}deg) rotateX(${-(data.do.beta - def_beta)}deg) rotateY(${(data.do.gamma - def_gamma)}deg)`;
-    	cubeEl.style.transform = `rotateZ(${(_alpha /*+ Math.sin(b)*/)}deg)`;
-    	
+    	//cubeEl.style.transform = `rotateZ(${(_alpha /*+ Math.sin(b)*/)}deg)`;
+    	cubeEl.style.transform = `rotateZ(${_alpha}deg) rotateX(${-_beta}deg) rotateY(${_gamma}deg)`;
     }
 	var _beta = 0;
 	var _gamma = 0;
