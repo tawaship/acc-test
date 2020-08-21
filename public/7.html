@@ -11,7 +11,6 @@
 <body style="margin: 0; background: #000; overflow: hidden; color: #000;">
 	<div style="position: absolute; z-index: 1; font-size: 2vw;">
 		var 10
-		<div id="do">-</div>
 		<div id="al">-</div>
 		<div id="be">-</div>
 		<div id="ga">-</div>
@@ -27,7 +26,9 @@
 			height: h
 		});
 		
-		document.getElementById('do').textContent = String(Boolean(window.DeviceOrientationEvent))
+		Content.defineImages({
+			water: 'water.jpg'
+		});
 		
 		Content.defineLibraries({
 			root: class Root extends Pixim.Container {
@@ -75,16 +76,42 @@
 					
 					const container = this.addChild(new PIXI.Container());
 					
-					const liquid = container.addChild(new PIXI.Graphics())
-					.beginFill(0x0000FF, 1)
-					.drawRect(-$.width * 2, 0, $.width * 5, $.height);
+					container.addChild(new PIXI.Graphics())
+						.beginFill(0xDCEAF7, 1)
+						.drawRect(-$.width * 2, 0, $.width * 5, $.height);
+						
+					const liquid = container.addChild(new PIXI.Sprite($.resources.images.water));
+					liquid.anchor.x = 0.5;
+					liquid.anchor.y = 0.4;
 					
-					liquid.addChild(new PIXI.Graphics())
-					.beginFill(0xFF0000, 1)
-					.drawCircle(0, 0, 10);
+					
+					
+					container.x = $.width / 2;
+					
+					container.addChild(new PIXI.Graphics())
+						.beginFill(0xFF0000, 1)
+						.drawCircle(0, 0, 10);
 					//liquid.pivot.x = $.width / 2;
 					//liquid.x = $.width * defValue;
-					liquid.y = $.height * (1 - defValue);
+					//liquid.y = $.height * (1 - defValue);
+					
+					
+					let dg = 0;
+					this.task.on('anim', e => {
+						dg += e.delta * 1.5;
+						liquid.rotation = Math.sin(dg * Math.PI / 180) * 3 * Math.PI / 180;
+					//	container.rotation = (Math.random() * 5 - 2.5) * Math.PI / 180;
+					})
+					/*
+					container.y = $.height - liquid.y;
+					this.task.on('in', e => {
+						container.y /= 1.04;
+						if (container.y < 0.1) {
+							container.y = 0;
+							this.task.clear('in');
+						}
+					});
+					*/
 					
 					const l = this.addChild(new PIXI.Graphics())
 					.lineStyle(3, 0xFF0000)
@@ -107,7 +134,7 @@
 					
 					l3.x = $.width * defValue;
 					
-					liquid.y = $.height * (1 - defValue);
+					//liquid.y = $.height * (1 - defValue);
 					
 					//const defY = $.height * (1 - defValue);
 					
@@ -142,7 +169,7 @@
 							if (t < 0) {
 								dy = 1;
 							} else {
-								dy = t * liquid.x - liquid.y;
+								dy = t * container.x - container.y;
 							}
 						}
 						
@@ -186,10 +213,11 @@
 						
 						//*
 						var c = (Math.cos(rad))
-						liquid.y = $.height * (1 - defValue) - (1- c) * $.height *  (0.5 - defValue);
+						container.y = $.height * (1 - defValue) - (1- c) * $.height *  (0.5 - defValue);
 						
 						var s = (Math.sin(rad))
-						liquid.x = $.width * defValue + (1-s) * $.width * (0.5 - defValue);
+						container.x = $.width * defValue + (1-s) * $.width * (0.5 - defValue);
+						
 						//liquid.y = Math.cos(rad) * $.height * (1 - defValue);
 						
 						
@@ -245,10 +273,10 @@
 						const rad = beta * Math.PI / 180 * Math.sin(_gamma * Math.PI / 180);
 						//ra.text = rad;
 						
-						const _x = rad < 0 ? -($.width - liquid.x) : liquid.x;
+						const _x = rad < 0 ? -($.width - container.x) : container.x;
 						//ta.text = Math.tan(rad) * _x;
 						
-						if (Math.tan(rad) * _x - liquid.y > 0) {
+						if (Math.tan(rad) * _x - container.y > 0) {
 							if (++f > ff) {
 								defValue -= 0.0002 * f;
 								if (f > tf) {
@@ -287,10 +315,10 @@
 						
 						//*
 						var c = (Math.cos(rad));
-						liquid.y = $.height * (1 - defValue) - (1- c) * $.height *  (0.5 - defValue);
+						container.y = $.height * (1 - defValue) - (1- c) * $.height *  (0.5 - defValue);
 						
 						var s = (Math.sin(rad))
-						liquid.x = $.width * defValue + (1-s) * $.width * (0.5 - defValue);
+						container.x = $.width * defValue + (1-s) * $.width * (0.5 - defValue);
 						//liquid.y = Math.cos(rad) * $.height * (1 - defValue);
 						
 						
@@ -303,7 +331,7 @@
 						liquid.x = $.width / $.height * defY
 						*/
 						
-						liquid.rotation = rad;
+						container.rotation = rad;
 						
 						//orbit.drawCircle(liquid.x, liquid.y, 3);
 					});
