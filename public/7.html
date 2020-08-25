@@ -10,384 +10,404 @@
 </head>
 <body style="margin: 0; background: #000; overflow: hidden; color: #000;">
 	<div style="position: absolute; z-index: 1; font-size: 2vw;">
-		ver.20200821
+		ver.20200824_4
 		<div id="al">-</div>
 		<div id="be">-</div>
 		<div id="ga">-</div>
 	</div>
 	<script>
-		const d = innerHeight / innerWidth;
-		var w = 800;
-		var h = 800 * d;
-		
-		var Content = Pixim.Content.create();
-		Content.setConfig({
-			width: w,
-			height: h
-		});
-		
-		Content.defineImages({
-			water: 'water.jpg'
-		});
-		
-		Content.defineLibraries({
-			root: class Root extends Pixim.Container {
-				constructor($) {
-					super();
-					
-					//$.vars.emitter.on("update", e => {
-						
-					//});
-					
-					/*
-					const co = this.addChild(new PIXI.Container())
-					const a = co.addChild(new PIXI.Graphics())
-					.beginFill(0x0000FF, 1)
-					.drawRect(-500, 50, 1000, 150)
-					
-					const co2 = co.addChild(new PIXI.Container())
-					
-					
-					const b = co2.addChild(new PIXI.Graphics())
-					.lineStyle(1, 0)
-					.drawRect(0, 0, 100, 200)
-					
-					const b2 = co2.addChild(new PIXI.Graphics())
-					.lineStyle(2, 0xFF0000)
-					.drawRect(0, 50, 100, 0)
-					
-					const c = co2.addChild(new PIXI.Graphics())
-					.beginFill(0, 0.1)
-					.drawRect(0, 0, 100, 200)
-					
-					//a.mask = c
-					
-					co.x = co.y = 300;
-					co.pivot.set(0, 200)
-					*/
-					
-					//this.x = 100
-					
-					let defValue = Math.random() * 0.5 + 0.3;
-					
-					var defY = $.height * (1 - defValue);
-					let val = defValue
-					const g = this.addChild(new PIXI.Container());
-					
-					const container = this.addChild(new PIXI.Container());
-					
-					container.addChild(new PIXI.Graphics())
-						.beginFill(0xDCEAF7, 1)
-						.drawRect(-$.width * 2, 0, $.width * 5, $.height);
-						
-					const liquid = container.addChild(new PIXI.Sprite($.resources.images.water));
-					liquid.anchor.x = 0.5;
-					liquid.anchor.y = 0.3;
-					
-					
-					
-					container.x = $.width / 2;
-					
-					container.addChild(new PIXI.Graphics())
-						.beginFill(0xFF0000, 1)
-						.drawCircle(0, 0, 10);
-					//liquid.pivot.x = $.width / 2;
-					//liquid.x = $.width * defValue;
-					//liquid.y = $.height * (1 - defValue);
-					
-					
-					let dg = 0;
-					this.task.on('anim', e => {
-						dg += e.delta * 1.5;
-						liquid.rotation = Math.sin(dg * Math.PI / 180) * 3 * Math.PI / 180;
-					//	container.rotation = (Math.random() * 5 - 2.5) * Math.PI / 180;
+		//window,addEventListener('touchend', function(){
+		(function() {
+			if (screen.orientation && screen.orientation.lock) {
+				const docEl = document.documentElement;
+				const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+				
+				return requestFullScreen.call(docEl)
+					.then(function() {
+						return screen.orientation.lock('portrait');
 					})
-					/*
-					container.y = $.height - liquid.y;
-					this.task.on('in', e => {
-						container.y /= 1.04;
-						if (container.y < 0.1) {
-							container.y = 0;
-							this.task.clear('in');
-						}
+					.catch(e => {
+						alert(e)
+						return Promise.resolve();
 					});
-					*/
-					
-					const l = this.addChild(new PIXI.Graphics())
-					.lineStyle(3, 0xFF0000)
-					.moveTo(0, 0)
-					.lineTo($.width, 0);
-					
-					l.y = $.height * (1 - defValue);
-					
-					const l2 = this.addChild(new PIXI.Graphics())
-					.lineStyle(3, 0x00FF00)
-					.moveTo(0, 0)
-					.lineTo(0, $.height);
-					
-					l2.x = $.width * (1 - defValue);
-					
-					const l3 = this.addChild(new PIXI.Graphics())
-					.lineStyle(3, 0xFF0000)
-					.moveTo(0, 0)
-					.lineTo(0, $.height);
-					
-					l3.x = $.width * defValue;
-					
-					//liquid.y = $.height * (1 - defValue);
-					
-					//const defY = $.height * (1 - defValue);
-					
-					//0.4h * w = h * 
-					//const rt = $.width / 
-					
-					var f = 0;
-					var ff = 5;
-					var tf = 25;
-					
-					const aa = ra => {
-					
-						if (r === 90) {
-							r = 91;
-						} else if (r === 270) {
-							r = 269
-						}
+			} else {
+				return Promise.resolve();
+			}
+		})().then(function() {
+			var d = innerHeight / innerWidth;
+			var w = 800;
+			var h = 800 * d;
+			
+			var Content = Pixim.Content.create();
+			Content.setConfig({
+				width: w,
+				height: h
+			});
+			
+			Content.defineImages({
+				water: 'water.jpg'
+			});
+			
+			Content.defineLibraries({
+				root: class Root extends Pixim.Container {
+					constructor($) {
+						super();
 						
-						const rad = r * Math.PI / 180;
-						
-						//console.log(Math.tan(r))
-						
-						
-						
-						var dy;
-						if (Math.cos(rad) < 0) {
-							dy = 1;
-						} else {
-						
-							var t = Math.tan(rad);
+						//$.vars.emitter.on("update", e => {
 							
-							if (t < 0) {
+						//});
+						
+						/*
+						const co = this.addChild(new PIXI.Container())
+						const a = co.addChild(new PIXI.Graphics())
+						.beginFill(0x0000FF, 1)
+						.drawRect(-500, 50, 1000, 150)
+						
+						const co2 = co.addChild(new PIXI.Container())
+						
+						
+						const b = co2.addChild(new PIXI.Graphics())
+						.lineStyle(1, 0)
+						.drawRect(0, 0, 100, 200)
+						
+						const b2 = co2.addChild(new PIXI.Graphics())
+						.lineStyle(2, 0xFF0000)
+						.drawRect(0, 50, 100, 0)
+						
+						const c = co2.addChild(new PIXI.Graphics())
+						.beginFill(0, 0.1)
+						.drawRect(0, 0, 100, 200)
+						
+						//a.mask = c
+						
+						co.x = co.y = 300;
+						co.pivot.set(0, 200)
+						*/
+						
+						//this.x = 100
+						
+						let defValue = Math.random() * 0.5 + 0.3;
+						
+						var defY = $.height * (1 - defValue);
+						let val = defValue
+						const g = this.addChild(new PIXI.Container());
+						
+						const container = this.addChild(new PIXI.Container());
+						
+						container.addChild(new PIXI.Graphics())
+							.beginFill(0xDCEAF7, 1)
+							.drawRect(-$.width * 2, 0, $.width * 5, $.height);
+							
+						const liquid = container.addChild(new PIXI.Sprite($.resources.images.water));
+						liquid.anchor.x = 0.5;
+						liquid.anchor.y = 0.3;
+						
+						
+						
+						container.x = $.width / 2;
+						
+						container.addChild(new PIXI.Graphics())
+							.beginFill(0xFF0000, 1)
+							.drawCircle(0, 0, 10);
+						//liquid.pivot.x = $.width / 2;
+						//liquid.x = $.width * defValue;
+						//liquid.y = $.height * (1 - defValue);
+						
+						
+						let dg = 0;
+						this.task.on('anim', e => {
+							dg += e.delta * 1.5;
+							liquid.rotation = Math.sin(dg * Math.PI / 180) * 3 * Math.PI / 180;
+						//	container.rotation = (Math.random() * 5 - 2.5) * Math.PI / 180;
+						})
+						/*
+						container.y = $.height - liquid.y;
+						this.task.on('in', e => {
+							container.y /= 1.04;
+							if (container.y < 0.1) {
+								container.y = 0;
+								this.task.clear('in');
+							}
+						});
+						*/
+						
+						const l = this.addChild(new PIXI.Graphics())
+						.lineStyle(3, 0xFF0000)
+						.moveTo(0, 0)
+						.lineTo($.width, 0);
+						
+						l.y = $.height * (1 - defValue);
+						
+						const l2 = this.addChild(new PIXI.Graphics())
+						.lineStyle(3, 0x00FF00)
+						.moveTo(0, 0)
+						.lineTo(0, $.height);
+						
+						l2.x = $.width * (1 - defValue);
+						
+						const l3 = this.addChild(new PIXI.Graphics())
+						.lineStyle(3, 0xFF0000)
+						.moveTo(0, 0)
+						.lineTo(0, $.height);
+						
+						l3.x = $.width * defValue;
+						
+						//liquid.y = $.height * (1 - defValue);
+						
+						//const defY = $.height * (1 - defValue);
+						
+						//0.4h * w = h * 
+						//const rt = $.width / 
+						
+						var f = 0;
+						var ff = 5;
+						var tf = 25;
+						
+						const aa = ra => {
+						
+							if (r === 90) {
+								r = 91;
+							} else if (r === 270) {
+								r = 269
+							}
+							
+							const rad = r * Math.PI / 180;
+							
+							//console.log(Math.tan(r))
+							
+							
+							
+							var dy;
+							if (Math.cos(rad) < 0) {
 								dy = 1;
 							} else {
-								dy = t * container.x - container.y;
-							}
-						}
-						
-						if (dy > 0) {
-							if (++f > ff) {
-								defValue -= 0.0005 * f;
-								if (f > tf) {
-									f = 0;
+							
+								var t = Math.tan(rad);
+								
+								if (t < 0) {
+									dy = 1;
+								} else {
+									dy = t * container.x - container.y;
 								}
 							}
 							
-						} else {
-							f = 0;
-						}
-						
-						//console.log( Math.tan(rad))
-						//liquid.x = r / 90 * $.width * defValue;
-						//liquid.y = (90 - r) / 90 * $.height * (1 - defValue);
-						//liquid.x = (1 - Math.cos(rad)) * $.width * defValue;
-						
-						//liquid.x = Math.sin(rad) * $.width * (0.5 - defValue) + $.width * defValue;
-						//liquid.y = $.width / 2 * Math.tan(rad)+$.width * (1 - defValue);
-						
-						//liquid.x = Math.sin(rad) * $.width * defValue;
-						//*
-						//liquid.x = Math.sin(rad) * $.width * (1-defValue) + $.width * (defValue);
-						//liquid.y = Math.cos(rad) * $.height * (1 - defValue);
-						
-						
-						//var aaa = this.addChild(new PIXI.Graphics())
-						//.beginFill(0x00FF00, 1)
-						//.drawCircle(0, 0, 5);
-						
-						//aaa.x = liquid.x
-						///aaa.y = liquid.y
-						//*/
-						//var y = 0
-						//if (r > 0) {
-						//	y = Math.tan(rad) * $.width * defValue;
-						//}
-						
-						//*
-						var c = (Math.cos(rad))
-						container.y = $.height * (1 - defValue) - (1- c) * $.height *  (0.5 - defValue);
-						
-						var s = (Math.sin(rad))
-						container.x = $.width * defValue + (1-s) * $.width * (0.5 - defValue);
-						
-						//liquid.y = Math.cos(rad) * $.height * (1 - defValue);
-						
-						
-						//*/
-						/*
-						liquid.y = defY;
-						
-						liquid.x = $.width / $.height * defY
-						*/
-						liquid.rotation = rad;
-					}
-					//liquid.y -= 100
-					
-					let r = 0;
-					var d = 95;
-					
-					var _alpha = 0;
-					var _beta = 0;
-					var _gamma = 0;
-					
-					$.vars.emitter.on('deviceorientation', e => {
-						_alpha = e.alpha;
-						_beta = e.beta;
-						_gamma = e.gamma;
-					});
-					
-					//const thresholdGamma = 45;
-					
-					/*
-					const ra = this.addChild(new PIXI.Text());
-					ra.x = 10;
-					ra.y = 10;
-					
-					const be = this.addChild(new PIXI.Text());
-					be.x = 10;
-					be.y = 50;
-					
-					const ta = this.addChild(new PIXI.Text());
-					ta.x = 10;
-					ta.y = 90;
-					
-					*/
-					this.task.on('loop', e => {
-						//let beta = (_beta < -90 ? 180 : (_beta < 0 ? 0 : _beta)) - 90;
-						
-						// ’[––‚ª’n•½–ÊˆÈ‰º‚ÉŒX‚¢‚½ê‡‚ÍA’n•½–Ê‚æ‚è1‹ãŒX‚«‚É•â³‚·‚é (‚ ‚Æ‚Åtan‚ðŽg‚¤‚Ì‚ÅA}90‹‚É‚Í‚µ‚È‚¢)
-						let beta = (_beta + 180) % 359;
-						beta = (beta <= 90 ? 359 : (beta <= 181 ? 181 : beta)) - 270;
-						
-						//be.text = beta;
-						
-						// ’[––yŽ²‚ª’n•½–ÊˆÈ‰º‚ÉŒX‚¢‚½ê‡‚ÍA’n•½–Ê‚æ‚è1‹ãŒX‚«‚É•â³‚·‚é (‚ ‚Æ‚Åtan‚ðŽg‚¤‚Ì‚ÅA}90‹‚É‚Í‚µ‚È‚¢)
-						const rad = beta * Math.PI / 180 * Math.sin(_gamma * Math.PI / 180);
-						//ra.text = rad;
-						
-						const _x = rad < 0 ? -($.width - container.x) : container.x;
-						//ta.text = Math.tan(rad) * _x;
-						
-						if (Math.tan(rad) * _x - container.y > 0) {
-							if (++f > ff) {
-								defValue -= 0.0002 * f;
-								if (f > tf) {
-									f = 0;
+							if (dy > 0) {
+								if (++f > ff) {
+									defValue -= 0.0005 * f;
+									if (f > tf) {
+										f = 0;
+									}
 								}
+								
+							} else {
+								f = 0;
 							}
-						} else {
-							f = 0;
+							
+							//console.log( Math.tan(rad))
+							//liquid.x = r / 90 * $.width * defValue;
+							//liquid.y = (90 - r) / 90 * $.height * (1 - defValue);
+							//liquid.x = (1 - Math.cos(rad)) * $.width * defValue;
+							
+							//liquid.x = Math.sin(rad) * $.width * (0.5 - defValue) + $.width * defValue;
+							//liquid.y = $.width / 2 * Math.tan(rad)+$.width * (1 - defValue);
+							
+							//liquid.x = Math.sin(rad) * $.width * defValue;
+							//*
+							//liquid.x = Math.sin(rad) * $.width * (1-defValue) + $.width * (defValue);
+							//liquid.y = Math.cos(rad) * $.height * (1 - defValue);
+							
+							
+							//var aaa = this.addChild(new PIXI.Graphics())
+							//.beginFill(0x00FF00, 1)
+							//.drawCircle(0, 0, 5);
+							
+							//aaa.x = liquid.x
+							///aaa.y = liquid.y
+							//*/
+							//var y = 0
+							//if (r > 0) {
+							//	y = Math.tan(rad) * $.width * defValue;
+							//}
+							
+							//*
+							var c = (Math.cos(rad))
+							container.y = $.height * (1 - defValue) - (1- c) * $.height *  (0.5 - defValue);
+							
+							var s = (Math.sin(rad))
+							container.x = $.width * defValue + (1-s) * $.width * (0.5 - defValue);
+							
+							//liquid.y = Math.cos(rad) * $.height * (1 - defValue);
+							
+							
+							//*/
+							/*
+							liquid.y = defY;
+							
+							liquid.x = $.width / $.height * defY
+							*/
+							liquid.rotation = rad;
 						}
+						//liquid.y -= 100
 						
-						//console.log( Math.tan(rad))
-						//liquid.x = r / 90 * $.width * defValue;
-						//liquid.y = (90 - r) / 90 * $.height * (1 - defValue);
-						//liquid.x = (1 - Math.cos(rad)) * $.width * defValue;
+						let r = 0;
+						var d = 95;
 						
-						//liquid.x = Math.sin(rad) * $.width * (0.5 - defValue) + $.width * defValue;
-						//liquid.y = $.width / 2 * Math.tan(rad)+$.width * (1 - defValue);
+						var _alpha = 0;
+						var _beta = 0;
+						var _gamma = 0;
 						
-						//liquid.x = Math.sin(rad) * $.width * defValue;
-						//*
-						//liquid.x = Math.sin(rad) * $.width * (1-defValue) + $.width * (defValue);
-						//liquid.y = Math.cos(rad) * $.height * (1 - defValue);
+						$.vars.emitter.on('deviceorientation', e => {
+							_alpha = e.alpha;
+							_beta = e.beta;
+							_gamma = e.gamma;
+						});
 						
+						//const thresholdGamma = 45;
 						
-						//var aaa = this.addChild(new PIXI.Graphics())
-						//.beginFill(0x00FF00, 1)
-						//.drawCircle(0, 0, 5);
-						
-						//aaa.x = liquid.x
-						///aaa.y = liquid.y
-						//*/
-						//var y = 0
-						//if (r > 0) {
-						//	y = Math.tan(rad) * $.width * defValue;
-						//}
-						
-						//*
-						var c = (Math.cos(rad));
-						container.y = $.height * (1 - defValue) - (1- c) * $.height *  (0.5 - defValue);
-						
-						var s = (Math.sin(rad))
-						container.x = $.width * defValue + (1-s) * $.width * (0.5 - defValue);
-						//liquid.y = Math.cos(rad) * $.height * (1 - defValue);
-						
-						
-						
-						
-						//*/
 						/*
-						liquid.y = defY;
+						const ra = this.addChild(new PIXI.Text());
+						ra.x = 10;
+						ra.y = 10;
 						
-						liquid.x = $.width / $.height * defY
+						const be = this.addChild(new PIXI.Text());
+						be.x = 10;
+						be.y = 50;
+						
+						const ta = this.addChild(new PIXI.Text());
+						ta.x = 10;
+						ta.y = 90;
+						
 						*/
+						this.task.on('loop', e => {
+							//let beta = (_beta < -90 ? 180 : (_beta < 0 ? 0 : _beta)) - 90;
+							
+							// ’[––‚ª’n•½–ÊˆÈ‰º‚ÉŒX‚¢‚½ê‡‚ÍA’n•½–Ê‚æ‚è1‹ãŒX‚«‚É•â³‚·‚é (‚ ‚Æ‚Åtan‚ðŽg‚¤‚Ì‚ÅA}90‹‚É‚Í‚µ‚È‚¢)
+							let beta = (_beta + 180) % 359;
+							beta = (beta <= 90 ? 359 : (beta <= 181 ? 181 : beta)) - 270;
+							
+							//be.text = beta;
+							
+							// ’[––yŽ²‚ª’n•½–ÊˆÈ‰º‚ÉŒX‚¢‚½ê‡‚ÍA’n•½–Ê‚æ‚è1‹ãŒX‚«‚É•â³‚·‚é (‚ ‚Æ‚Åtan‚ðŽg‚¤‚Ì‚ÅA}90‹‚É‚Í‚µ‚È‚¢)
+							const rad = beta * Math.PI / 180 * Math.sin(_gamma * Math.PI / 180);
+							//ra.text = rad;
+							
+							const _x = rad < 0 ? -($.width - container.x) : container.x;
+							//ta.text = Math.tan(rad) * _x;
+							
+							if (Math.tan(rad) * _x - container.y > 0) {
+								if (++f > ff) {
+									defValue -= 0.0002 * f;
+									if (f > tf) {
+										f = 0;
+									}
+								}
+							} else {
+								f = 0;
+							}
+							
+							//console.log( Math.tan(rad))
+							//liquid.x = r / 90 * $.width * defValue;
+							//liquid.y = (90 - r) / 90 * $.height * (1 - defValue);
+							//liquid.x = (1 - Math.cos(rad)) * $.width * defValue;
+							
+							//liquid.x = Math.sin(rad) * $.width * (0.5 - defValue) + $.width * defValue;
+							//liquid.y = $.width / 2 * Math.tan(rad)+$.width * (1 - defValue);
+							
+							//liquid.x = Math.sin(rad) * $.width * defValue;
+							//*
+							//liquid.x = Math.sin(rad) * $.width * (1-defValue) + $.width * (defValue);
+							//liquid.y = Math.cos(rad) * $.height * (1 - defValue);
+							
+							
+							//var aaa = this.addChild(new PIXI.Graphics())
+							//.beginFill(0x00FF00, 1)
+							//.drawCircle(0, 0, 5);
+							
+							//aaa.x = liquid.x
+							///aaa.y = liquid.y
+							//*/
+							//var y = 0
+							//if (r > 0) {
+							//	y = Math.tan(rad) * $.width * defValue;
+							//}
+							
+							//*
+							var c = (Math.cos(rad));
+							container.y = $.height * (1 - defValue) - (1- c) * $.height *  (0.5 - defValue);
+							
+							var s = (Math.sin(rad))
+							container.x = $.width * defValue + (1-s) * $.width * (0.5 - defValue);
+							//liquid.y = Math.cos(rad) * $.height * (1 - defValue);
+							
+							
+							
+							
+							//*/
+							/*
+							liquid.y = defY;
+							
+							liquid.x = $.width / $.height * defY
+							*/
+							
+							container.rotation = rad;
+							
+							//orbit.drawCircle(liquid.x, liquid.y, 3);
+						});
 						
-						container.rotation = rad;
-						
-						//orbit.drawCircle(liquid.x, liquid.y, 3);
-					});
-					
-					const orbit = this.addChild(new PIXI.Graphics())
-						.beginFill(0x00FF00, 1);
+						const orbit = this.addChild(new PIXI.Graphics())
+							.beginFill(0x00FF00, 1);
+					}
 				}
-			}
-		});
-		
-		const emitter = new Pixim.Emitter();
-		
-		const al = document.getElementById('al');
-		const be = document.getElementById('be');
-		const ga = document.getElementById('ga');
-		
-		window.addEventListener('deviceorientation', e => {
-			al.textContent = e.alpha;
-			be.textContent = e.beta;
-			ga.textContent = e.gamma;
-			
-			emitter.emit('deviceorientation', e);
-		});
-		
-		var app = new Pixim.Application({
-			width: w,
-			height: h,
-			backgroundColor: 0xFFFFFF
-		});
-		
-		var content = new Content();
-		content.addVars({
-			emitter
-		});
-		
-		window.addEventListener('touchend', () => {
-			if (!DeviceMotionEvent || !DeviceMotionEvent.requestPermission) {
-				return;
-			}
-			
-			DeviceMotionEvent.requestPermission();
-		});
-		
-	 	app
-	 		.fullScreen()
-			.attachAsync(content)
-			.then(() => {
-				app.play();
-				/*
-				emitter.emit('deviceorientation', {
-					alpha: 0,
-					beta: 135,
-					gamma: 90
-				});
-				*/
 			});
+			
+			const emitter = new Pixim.Emitter();
+			
+			const al = document.getElementById('al');
+			const be = document.getElementById('be');
+			const ga = document.getElementById('ga');
+			
+			window.addEventListener('deviceorientation', e => {
+				al.textContent = e.alpha;
+				be.textContent = e.beta;
+				ga.textContent = e.gamma;
+				
+				emitter.emit('deviceorientation', e);
+			});
+			
+			var app = new Pixim.Application({
+				width: w,
+				height: h,
+				backgroundColor: 0xFFFFFF
+			});
+			
+			var content = new Content();
+			content.addVars({
+				emitter
+			});
+			
+			window.addEventListener('touchend', () => {
+				if (!DeviceMotionEvent || !DeviceMotionEvent.requestPermission) {
+					return;
+				}
+				
+				DeviceMotionEvent.requestPermission();
+			});
+			
+		 	app
+		 		.fullScreen()
+				.attachAsync(content)
+				.then(() => {
+					app.play();
+					/*
+					emitter.emit('deviceorientation', {
+						alpha: 0,
+						beta: 135,
+						gamma: 90
+					});
+					*/
+				});
+		});
+		//});
 	</script>
 </body>
 </html>
